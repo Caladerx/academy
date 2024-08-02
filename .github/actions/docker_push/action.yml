@@ -9,7 +9,8 @@ inputs:
     required: true
   docker_image_name:
     description: "Docker Image Name"
-    required: true
+    required: false
+    default: $NAME:$TAG
 
 runs:
   using: composite
@@ -20,8 +21,11 @@ runs:
         username: ${{ inputs.docker_username }}
         password: ${{ inputs.docker_token }}
 
-    - run: |
-          docker tag ${{ inputs.docker_image_name }} ${{inputs.docker_username}}/${{inputs.docker_image_name}}
-          docker push ${{inputs.docker_username}}/${{inputs.docker_image_name}}
+    - name: Docker Tag
+      run: docker tag ${{ inputs.docker_image_name }} ${{inputs.docker_username}}/${{inputs.docker_image_name}}
+      shell: bash
+
+    - name: Docker Push
+      run: docker push ${{inputs.docker_username}}/${{inputs.docker_image_name}}
       shell: bash
 
