@@ -34,5 +34,9 @@ jobs:
       uses: Caladerx/academy/.github/actions/docker_build@main
       with:
         dockerfile_path: "src/main/docker/Dockerfile.jvm"
+        image_name: "academy"
+
+
     - name: List Docker Images
       run: docker images
+
