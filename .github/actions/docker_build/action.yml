@@ -17,7 +17,8 @@ runs:
   using: composite
   steps:
     - name: "Define env variables"
-    - run: |
+      shell: bash
+      run: |
         if [ -z "${{ inputs.tag_name }}" ]; then
           echo "TAG=$(date +%s)" >> $GITHUB_ENV
         else
@@ -28,4 +29,4 @@ runs:
         echo "DOCKER_IMAGE_NAME=$NAME" >> $GITHUB_ENV
 
         docker build . --file "${{ inputs.dockerfile_path }}" --tag $NAME
-      shell: bash
+      
