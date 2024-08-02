@@ -20,23 +20,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-    - name: Build with Maven
-      uses: Caladerx/academy/.github/actions/maven_build@main
+      - uses: actions/checkout@v4
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        uses: Caladerx/academy/.github/actions/maven_build@main
 
-    - name: Create Docker Image
-      uses: Caladerx/academy/.github/actions/docker_build@main
-      with:
-        dockerfile_path: "src/main/docker/Dockerfile.jvm"
-        image_name: "academy"
+      - name: Create Docker Image
+        uses: Caladerx/academy/.github/actions/docker_build@main
+        with:
+          dockerfile_path: "src/main/docker/Dockerfile.jvm"
+          image_name: "academy"
 
+      - name: List Docker Images
+        run: docker images
 
-    - name: List Docker Images
-      run: docker images
-
+      - name: Push Docker Image to Docker Hub
+        uses: Caladerx/academy/.github/actions/docker_push@main
+        with:
+          docker_username: ${{secrets.DOCKERHUB_USERNAME}}
+          docker_token: ${{secrets.DOCKERHUB_TOKEN}}
+          docker_image_name: ${{env.DOCKER_IMAGE_NAME}}
