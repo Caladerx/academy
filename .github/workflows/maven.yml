@@ -31,6 +31,8 @@ jobs:
       uses: Caladerx/academy/.github/actions/maven_build@main
 
     - name: Create Docker Image
-      run: docker build . --file src/main/docker/Dockerfile.jvm --tag academy:$(date +%s)
+      uses: Caladerx/academy/.github/actions/docker_build@main
+      with:
+        dockerfile_path: "src/main/docker/Dockerfile.jvm"
     - name: List Docker Images
       run: docker images
